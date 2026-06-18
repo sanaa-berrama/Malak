@@ -44,7 +44,7 @@ export function EnvelopeIntro({
             transition={{ duration: 0.9, delay: 0.25 }}
           >
             <div className="font-garamond text-[12px] uppercase tracking-[0.45em] text-gold-deep">
-              INVITATION
+              Invitation
             </div>
             <div className="mt-2.5 font-serif font-medium italic text-ink" style={{ fontSize: "clamp(26px,5vw,40px)" }}>
               Vous êtes invité(e)
