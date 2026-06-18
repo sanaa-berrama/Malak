@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ivory: #f8f5f0;
+  --ivory-deep: #f1ebe0;
+  --cream: #fbf8f3;
+  --gold: #c8a97e;
+  --gold-deep: #b08d57;
+  --gold-soft: #d8c3a2;
+  --ink: #2d2d2d;
+  --ink-soft: #5a544c;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ivory);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.locked {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ---------- ambient background ---------- */
+.wash {
+  background:
+    radial-gradient(60% 50% at 50% 12%, rgba(255, 252, 245, 0.9), transparent 70%),
+    radial-gradient(70% 60% at 80% 90%, rgba(216, 195, 162, 0.18), transparent 70%),
+    radial-gradient(70% 60% at 12% 80%, rgba(216, 195, 162, 0.16), transparent 70%),
+    linear-gradient(180deg, #fbf8f3 0%, #f8f5f0 45%, #f1ebe0 100%);
+}
+
+.rays {
+  background: conic-gradient(
+    from 0deg at 50% 0%,
+    transparent 0deg, rgba(255, 253, 247, 0.55) 6deg, transparent 14deg,
+    transparent 24deg, rgba(255, 253, 247, 0.4) 30deg, transparent 40deg,
+    transparent 70deg, rgba(255, 253, 247, 0.5) 78deg, transparent 88deg,
+    transparent 120deg, rgba(255, 253, 247, 0.35) 128deg, transparent 138deg
+  );
+  mix-blend-mode: screen;
+}
+
+.leaf-shadow {
+  border-radius: 45% 55% 50% 50% / 60% 40% 60% 40%;
+  background: radial-gradient(closest-side, rgba(120, 98, 64, 0.1), transparent);
+  filter: blur(8px);
+}
+
+.mote {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(216, 195, 162, 0.5));
+}
+
+/* ---------- envelope mechanics (CSS so the flap can rotate in 3D) ---------- */
+.envelope {
+  transform-style: preserve-3d;
+  transition: transform 1.1s cubic-bezier(0.6, 0.02, 0.2, 1);
+}
+
+.env-letter {
+  transition: transform 1.2s cubic-bezier(0.5, 0, 0.2, 1) 0.35s, opacity 0.8s ease 1.2s;
+}
+
+.flap-left { clip-path: polygon(0 0, 52% 50%, 0 100%); }
+.flap-right { clip-path: polygon(100% 0, 48% 50%, 100% 100%); }
+.flap-bottom { clip-path: polygon(0 100%, 50% 46%, 100% 100%); }
+
+.flap-top {
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transition: transform 1s cubic-bezier(0.6, 0.02, 0.2, 1), z-index 0s linear 0.5s;
+  will-change: transform;
+}
+
+.seal-half { transition: transform 0.9s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.9s ease; }
+.seal-half.left { clip-path: polygon(0 0, 52% 0, 48% 100%, 0 100%); }
+.seal-half.right { clip-path: polygon(52% 0, 100% 0, 100% 100%, 48% 100%); }
+
+/* opening state, toggled by a class on .envelope */
+.envelope.opening .seal-emblem { opacity: 0; }
+.envelope.opening .seal-ring { opacity: 0; transition: opacity 0.3s; }
+.envelope.opening .seal-half.left { transform: translate(-34px, 40px) rotate(-40deg); opacity: 0; }
+.envelope.opening .seal-half.right { transform: translate(34px, 46px) rotate(46deg); opacity: 0; }
+.envelope.opening .flap-top { transform: rotateX(180deg); z-index: 1 !important; }
+.envelope.opening .env-letter { transform: translateY(-78%); opacity: 0; }
+.envelope.opening { transform: translateY(8px) scale(1.02); }
+
+/* ---------- oriental arch card shape ---------- */
+.arch-card {
+  border-radius: 130px 130px 18px 18px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, #fcfaf5, transparent 60%),
+    linear-gradient(180deg, #fbf8f3, #f6f1e8);
+}
+
+/* gold text */
+.gold-text {
+  background: linear-gradient(180deg, #d9bc8e, #b08d57 55%, #9a7641);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 14px rgba(176, 141, 87, 0.35));
+}
+
+/* countdown tick */
+@keyframes tick {
+  0% { transform: translateY(-7px); opacity: 0.3; filter: blur(1px); }
+  100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+.cd-tick { animation: tick 0.45s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+  }
+}
